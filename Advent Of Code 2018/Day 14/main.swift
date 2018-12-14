@@ -30,7 +30,7 @@ func generateRecipes(while shouldContinue: () -> Bool) {
 }
 
 generateRecipes { recipes.count < recipeCount + 10 }
-print(recipes.suffix(10).map(String.init).joined())
+print(recipes.prefix(recipeCount + 10).suffix(10).map(String.init).joined())
 
 var currentDigit = 0
 generateRecipes {
