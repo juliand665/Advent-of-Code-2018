@@ -2,25 +2,7 @@
 
 import Foundation
 
-struct Point: Hashable {
-	var x: Int
-	var y: Int
-	
-	func distance(to other: Point) -> Int {
-		return abs(x - other.x) + abs(y - other.y)
-	}
-}
-
-extension Point {
-	init<S>(raw: S) where S: StringProtocol {
-		var parser = Parser(reading: raw)
-		x = parser.readInt()
-		parser.consume(", ")
-		y = parser.readInt()
-	}
-}
-
-let points = input().lines().map(Point.init)
+let points = input().lines().map(Vector2.init)
 print("parsed")
 
 let maxX = points.map(^\.x).max()!
@@ -29,17 +11,17 @@ print("maxes")
 
 let positions = (0...maxX).flatMap { x in
 	(0...maxY).map { y in
-		Point(x: x, y: y)
+		Vector2(x: x, y: y)
 	}
 }
 print("positions")
 
-let pointDistances: [(position: Point, distances: [Int])] = positions.map { pos in
+let pointDistances: [(position: Vector2, distances: [Int])] = positions.map { pos in
 	(pos, points.map { $0.distance(to: pos) })
 }
 print("distances")
 
-let closestPoints: [(position: Point, closestPoint: Int?)] = pointDistances.map { pos, distances in
+let closestPoints: [(position: Vector2, closestPoint: Int?)] = pointDistances.map { pos, distances in
 	let min = distances.min()!
 	if distances.count(of: min) == 1 {
 		return (pos, distances.firstIndex(of: min)!)

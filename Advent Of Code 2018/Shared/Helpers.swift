@@ -72,10 +72,41 @@ extension Character {
 	}
 }
 
+extension Collection {
+	func element(at index: Index) -> Element? {
+		return indices.contains(index) ? self[index] : nil
+	}
+}
+
+extension Collection where Index == Int, Element: Collection, Element.Index == Int {
+	func element(at position: Vector2) -> Element.Element? {
+		return element(at: position.y)?.element(at: position.x)
+	}
+}
+
 extension MutableCollection where Index == Int, Element: MutableCollection, Element.Index == Int {
 	/// row-major
 	subscript(position: Vector2) -> Element.Element {
 		get { return self[position.y][position.x] }
 		set { self[position.y][position.x] = newValue }
+	}
+}
+
+protocol ReferenceHashable: AnyObject, Hashable {}
+
+extension ReferenceHashable {
+	func hash(into hasher: inout Hasher) {
+		withUnsafePointer(to: self) {
+			hasher.combine(bytes: UnsafeRawBufferPointer(start: $0, count: MemoryLayout<Self>.size))
+		}
+	}
+}
+
+extension Sequence {
+	func sorted<C>(on accessor: (Element) -> C) -> [Element] where C: Comparable {
+		return self
+			.map { ($0, accessor($0)) }
+			.sorted { $0.1 < $1.1 }
+			.map { $0.0 }
 	}
 }

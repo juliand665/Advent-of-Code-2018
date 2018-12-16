@@ -30,3 +30,15 @@ struct Parser {
 		input = input.drop { $0 == separator }
 	}
 }
+
+protocol Parseable {
+	init<S>(rawValue: S) where S: StringProtocol
+	init(from parser: inout Parser)
+}
+
+extension Parseable {
+	init<S>(rawValue: S) where S: StringProtocol {
+		var parser = Parser(reading: rawValue)
+		self.init(from: &parser)
+	}
+}

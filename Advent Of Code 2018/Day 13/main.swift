@@ -2,30 +2,6 @@
 
 import Foundation
 
-enum Direction: Character, CaseIterable {
-	case up = "^"
-	case right = ">"
-	case down = "v"
-	case left = "<"
-	
-	var offset: Vector2 {
-		switch self {
-		case .up:
-			return Vector2(x: 0, y: -1)
-		case .right:
-			return Vector2(x: +1, y: 0)
-		case .down:
-			return Vector2(x: 0, y: +1)
-		case .left:
-			return Vector2(x: -1, y: 0)
-		}
-	}
-	
-	func rotated(by diff: Int) -> Direction {
-		return Direction.allCases[(Direction.allCases.firstIndex(of: self)! + diff) & 0b11]
-	}
-}
-
 enum Track: Character {
 	case topRightCurve = "/"
 	case topLeftCurve = "\\"
@@ -34,7 +10,7 @@ enum Track: Character {
 	case intersection = "+"
 }
 
-final class Cart {
+final class Cart: ReferenceHashable {
 	var position: Vector2
 	var direction: Direction
 	var nextIntersectionChoice = -1
@@ -77,22 +53,14 @@ extension Cart: Comparable {
 	}
 	
 	static func < (lhs: Cart, rhs: Cart) -> Bool {
-		return (lhs.position.y, lhs.position.x) < (rhs.position.y, rhs.position.x)
-	}
-}
-
-extension Cart: Hashable {
-	func hash(into hasher: inout Hasher) {
-		withUnsafePointer(to: self) {
-			hasher.combine(bytes: UnsafeRawBufferPointer(start: $0, count: MemoryLayout<Cart>.size))
-		}
+		return lhs.position < rhs.position
 	}
 }
 
 var carts: Set<Cart> = []
 
 let spaces: [[Track?]] = input().lines().enumerated().map { y, rawValue in
-	return rawValue.enumerated().map { x, rawValue in
+	rawValue.enumerated().map { x, rawValue in
 		if let track = Track(rawValue: rawValue) {
 			return track
 		} else if let cart = Cart(rawValue: rawValue, at: Vector2(x: x, y: y)) {
