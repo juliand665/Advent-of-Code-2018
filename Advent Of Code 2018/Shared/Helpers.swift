@@ -110,3 +110,13 @@ extension Sequence {
 			.map { $0.0 }
 	}
 }
+
+extension MutableCollection {
+	mutating func mapInPlace(_ transform: (inout Element) -> Void) {
+		var index = startIndex
+		while index != endIndex {
+			transform(&self[index])
+			index = self.index(after: index)
+		}
+	}
+}
