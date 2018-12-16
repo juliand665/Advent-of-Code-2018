@@ -54,17 +54,22 @@ struct Instruction: Parseable {
 	}
 }
 
-struct Sample {
+struct Sample: Parseable {
 	let before, after: [Int]
 	let instruction: Instruction
 	
-	init<S>(rawValue: S) where S: RandomAccessCollection, S.Index == Int, S.Element == Substring {
-		func state(from raw: Substring) -> [Int] {
-			return raw.split(separator: "[").last!.dropLast().components(separatedBy: ", ").forceMap(Int.init)
+	init(from parser: inout Parser) {
+		func parseState() -> [Int] {
+			parser.consume(through: "[")
+			defer { parser.consume("]") }
+			return Array(from: &parser)
 		}
-		self.before = state(from: rawValue.first!)
-		self.after = state(from: rawValue.last!)
-		self.instruction = Instruction(rawValue: rawValue.dropFirst().first!)
+		
+		self.before = parseState()
+		parser.consume("\n")
+		self.instruction = Instruction(from: &parser)
+		parser.consume("\n")
+		self.after = parseState()
 	}
 	
 	func works(with operation: Operation) -> Bool {
@@ -72,11 +77,9 @@ struct Sample {
 	}
 }
 
-let sampleCount = 796
-
-let lines = input().lines()
-let samples = (0..<sampleCount).map { Sample(rawValue: lines[(3 * $0)..<(3 * $0 + 3)]) }
-let program = lines.dropFirst(sampleCount * 3).map(Instruction.init)
+let parts = input().components(separatedBy: "\n\n\n\n")
+let samples = parts.first!.components(separatedBy: "\n\n").map(Sample.init)
+let program = parts.last!.lines().map(Instruction.init)
 
 let matches = samples.map {
 	(opcode: $0.instruction.opcode, operations: Set(Operation.allCases.filter($0.works(with:))))
