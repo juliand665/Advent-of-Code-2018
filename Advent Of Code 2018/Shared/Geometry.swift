@@ -50,6 +50,12 @@ struct Vector2: Hashable {
 	}
 }
 
+extension Vector2 {
+	init(_ x: Int, _ y: Int) {
+		self.init(x: x, y: y)
+	}
+}
+
 extension Vector2: Comparable {
 	static func < (lhs: Vector2, rhs: Vector2) -> Bool {
 		return (lhs.y, lhs.x) < (rhs.y, rhs.x)
