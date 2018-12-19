@@ -34,9 +34,11 @@ struct Parser {
 		input.removeFirst(part.count)
 	}
 	
-	mutating func consume(through separator: Character) {
-		input = input.drop { $0 != separator }
-		consume(String(separator))
+	/// - returns: the consumed part, excluding the separator
+	@discardableResult mutating func consume(through separator: Character) -> Substring {
+		let index = input.firstIndex(of: separator)!
+		defer { input = input[index...] }
+		return input.prefix(upTo: index)
 	}
 	
 	mutating func consume(while separator: Character) {

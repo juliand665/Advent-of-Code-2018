@@ -1,0 +1,17 @@
+let goal = isOnPart2
+	? 10_551_367 // 967 + (27 * 28 + 29) * 30 * 14 * 32
+	: 967 // 2 * 2 * 19 * 11 + 5 * 22 + 21
+
+var total = 0
+for outer in 1...goal {
+	for inner in 1...goal {
+		if outer * inner == goal {
+			total += outer
+		}
+	}
+}
+
+return total
+
+// factors of 10'551'367: 1, 2801, 3767, 10551367
+// sum: 10'557'936
