@@ -81,17 +81,43 @@ enum Direction: Character, CaseIterable {
 	var offset: Vector2 {
 		switch self {
 		case .up:
-			return Vector2(x: 0, y: -1)
+			return Vector2(x: 00, y: -1)
 		case .right:
-			return Vector2(x: +1, y: 0)
+			return Vector2(x: +1, y: 00)
 		case .down:
-			return Vector2(x: 0, y: +1)
+			return Vector2(x: 00, y: +1)
 		case .left:
-			return Vector2(x: -1, y: 0)
+			return Vector2(x: -1, y: 00)
 		}
 	}
 	
 	func rotated(by diff: Int) -> Direction {
 		return Direction.allCases[(Direction.allCases.firstIndex(of: self)! + diff) & 0b11]
+	}
+}
+
+extension Array where Element == Vector2 {
+	static let distance1 = [
+		Vector2(00, -1),
+		Vector2(+1, 00),
+		Vector2(00, +1),
+		Vector2(-1, 00),
+	]
+	
+	static let distance1or2 = [
+		Vector2(00, -1),
+		Vector2(+1, -1),
+		Vector2(+1, 00),
+		Vector2(+1, +1),
+		Vector2(00, +1),
+		Vector2(-1, +1),
+		Vector2(-1, 00),
+		Vector2(-1, -1),
+	]
+}
+
+extension Vector2 {
+	func applyingOffsets(_ offsets: [Vector2]) -> [Vector2] {
+		return offsets.map { $0 + self }
 	}
 }
