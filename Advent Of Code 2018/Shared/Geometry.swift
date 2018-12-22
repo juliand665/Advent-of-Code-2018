@@ -96,6 +96,12 @@ enum Direction: Character, CaseIterable {
 	}
 }
 
+extension Direction: CustomStringConvertible {
+	var description: String {
+		return String(rawValue)
+	}
+}
+
 extension Array where Element == Vector2 {
 	static let distance1 = [
 		Vector2(00, -1),

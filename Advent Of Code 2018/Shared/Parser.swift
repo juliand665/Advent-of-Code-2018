@@ -5,12 +5,18 @@ import Foundation
 struct Parser {
 	var input: Substring
 	
+	var isDone: Bool { return input.isEmpty }
+	
+	var next: Character? {
+		return input.first
+	}
+	
 	init<S>(reading string: S) where S: StringProtocol {
 		input = Substring(string)
 	}
 	
-	func next() -> Character? {
-		return input.first
+	@discardableResult mutating func consumeNext() -> Character {
+		return input.removeFirst()
 	}
 	
 	private static let numberCharacters = Set("+-0123456789")
