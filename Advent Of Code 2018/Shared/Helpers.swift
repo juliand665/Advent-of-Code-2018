@@ -120,3 +120,21 @@ extension MutableCollection {
 		}
 	}
 }
+
+protocol Rotatable {
+	func rotated() -> Self
+	func rotated(by diff: Int) -> Self
+}
+
+extension Rotatable {
+	func rotated() -> Self {
+		return rotated(by: 1)
+	}
+}
+
+extension Rotatable where Self: CaseIterable, Self: Equatable, Self.AllCases.Index == Int {
+	func rotated(by diff: Int = 1) -> Self {
+		let cases = Self.allCases
+		return cases[(cases.firstIndex(of: self)! + diff + cases.count) % cases.count]
+	}
+}

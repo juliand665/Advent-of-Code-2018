@@ -2,21 +2,6 @@
 
 import Foundation
 
-struct Instruction: Parseable {
-	var operation: Operation
-	var a, b, c: Int
-	
-	init(from parser: inout Parser) {
-		self.operation = Operation(rawValue: String(parser.consume(through: " ")))!
-		parser.consume(while: " ")
-		self.a = parser.readInt()
-		parser.consume(while: " ")
-		self.b = parser.readInt()
-		parser.consume(while: " ")
-		self.c = parser.readInt()
-	}
-}
-
 let lines = input().lines()
 let ipRegister = Int(String(lines.first!.last!))!
 let instructions = lines.dropFirst().map(Instruction.init)

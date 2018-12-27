@@ -53,20 +53,81 @@ func read() -> (path: Path, isScopeDone: Bool) {
 	}
 }
 
-let (path, isDone) = read()
-assert(isDone)
+struct DoorAvailability: OptionSet {
+	
+	static let horizontal = DoorAvailability(rawValue: 1 << 0)
+	static let vertical = DoorAvailability(rawValue: 1 << 1)
+	
+	let rawValue: Int
+}
 
-func follow<C>(_ path: C) -> [[Direction]] where C: Collection, C.Element == PathPart {
-	switch path.first {
-	case nil:
-		return [[]]
-	case .single(let steps)?:
-		return follow(path.dropFirst()).map { steps + $0 }
-	case .multiple(let options)?:
-		let next = follow(path.dropFirst())
-		return options.flatMap(follow).flatMap { option in next.map { option + $0 } }
+let offset = Vector2(1000, 1000)
+let size = Vector2(2000, 2000)
+var doors: [[DoorAvailability]] = Array(repeating: Array(repeating: [], count: size.x), count: size.y)
+
+struct Room {
+	var position: Vector2
+	
+	subscript(_ direction: Direction) -> Bool {
+		get {
+			switch direction {
+			case .up:
+				return doors[position + offset].contains(.vertical)
+			case .down:
+				return doors[position + offset - .unitY].contains(.vertical)
+			case .right:
+				return doors[position + offset].contains(.horizontal)
+			case .left:
+				return doors[position + offset - .unitX].contains(.horizontal)
+			}
+		}
+		nonmutating set {
+			switch direction {
+			case .up:
+				doors[position + offset].insert(.vertical)
+			case .down:
+				doors[position + offset - .unitY].insert(.vertical)
+			case .right:
+				doors[position + offset].insert(.horizontal)
+			case .left:
+				doors[position + offset - .unitX].insert(.horizontal)
+			}
+		}
 	}
 }
 
-let allPaths = follow(path)
-print(allPaths.count)
+func room(at pos: Vector2) -> Room {
+	return Room(position: pos)
+}
+
+let (path, isDone) = read()
+assert(isDone)
+
+var exploredLength = 0
+func explore<C>(_ path: C, startingFrom start: Vector2 = .zero) -> Set<Vector2> where C: Collection, C.Element == PathPart {
+	defer {
+		if path.count > exploredLength {
+			exploredLength = path.count
+			print(exploredLength)
+		}
+	}
+	
+	switch path.first {
+	case nil:
+		return [start]
+	case .single(let steps)?:
+		var position = start
+		for direction in steps {
+			let room = Room(position: position)
+			room[direction] = true
+			position = position + direction.offset
+		}
+		return Set(explore(path.dropFirst(), startingFrom: position))
+	case .multiple(let options)?:
+		let next = options.flatMap { explore($0, startingFrom: start) }
+		return Set(next.flatMap { explore(path.dropFirst(), startingFrom: $0) })
+	}
+}
+
+let endPositions = explore(path)
+print(endPositions.count)

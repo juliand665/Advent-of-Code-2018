@@ -3,6 +3,10 @@
 import Foundation
 
 struct Vector2: Hashable {
+	static let zero = Vector2(0, 0)
+	static let unitX = Vector2(1, 0)
+	static let unitY = Vector2(0, 1)
+	
 	var x: Int
 	var y: Int
 	
@@ -72,7 +76,7 @@ extension Vector2: Parseable {
 	}
 }
 
-enum Direction: Character, CaseIterable {
+enum Direction: Character, CaseIterable, Rotatable {
 	case up = "^"
 	case right = ">"
 	case down = "v"
@@ -89,10 +93,6 @@ enum Direction: Character, CaseIterable {
 		case .left:
 			return Vector2(x: -1, y: 00)
 		}
-	}
-	
-	func rotated(by diff: Int) -> Direction {
-		return Direction.allCases[(Direction.allCases.firstIndex(of: self)! + diff) & 0b11]
 	}
 }
 
