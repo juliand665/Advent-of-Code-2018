@@ -15,7 +15,7 @@ struct Vector2: Hashable {
 	}
 	
 	var neighbors: [Vector2] {
-		return Direction.allCases.map { self + $0.offset }
+		return applyingOffsets(.distance1)
 	}
 	
 	static func + (lhs: Vector2, rhs: Vector2) -> Vector2 {
