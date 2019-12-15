@@ -87,7 +87,7 @@ let empty = Array(repeating: Array(repeating: Int.max, count: width), count: hei
 var bestTimes: [[[Int]]] = Array(repeating: empty, count: Tool.allCases.count)
 
 bestTimes[Tool.torch.rawValue][Vector2.zero] = 0
-var toInvestigate = [Investigation(tool: .torch, position: .zero)]
+var toInvestigate = [Investigation(tool: .torch, position: .zero)][...]
 while !toInvestigate.isEmpty {
 	let investigation = toInvestigate.removeFirst()
 	let time = bestTimes[investigation.tool.rawValue][investigation.position]
