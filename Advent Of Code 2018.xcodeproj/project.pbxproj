@@ -489,6 +489,7 @@
 		95EC1C2321C206A200A26679 /* Day 13 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Day 13"; sourceTree = BUILT_PRODUCTS_DIR; };
 		95EC1C2521C206A200A26679 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		95EC1C2F21C2462A00A26679 /* input.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = input.txt; sourceTree = "<group>"; wrapsLines = 0; };
+		B9D5CEE5277A4F6000A6DBE0 /* AoC-Helpers */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = "AoC-Helpers"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -870,6 +871,7 @@
 		95D6EF6D1FD193290060205D = {
 			isa = PBXGroup;
 			children = (
+				B9D5CEE5277A4F6000A6DBE0 /* AoC-Helpers */,
 				955D65A91FD34447005D20D8 /* Shared */,
 				95D6EF851FD193480060205D /* Day 1 */,
 				95890A6321B473F500510E44 /* Day 2 */,
@@ -897,6 +899,7 @@
 				959D775021D4E62200618A86 /* Day 24 */,
 				959D776221D4E66100618A86 /* Day 25 */,
 				95D6EF771FD193290060205D /* Products */,
+				B9D5CEE6277A4F6B00A6DBE0 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -966,6 +969,13 @@
 				95EC1C2F21C2462A00A26679 /* input.txt */,
 			);
 			path = "Day 13";
+			sourceTree = "<group>";
+		};
+		B9D5CEE6277A4F6B00A6DBE0 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1324,6 +1334,8 @@
 			dependencies = (
 			);
 			name = "Day 20";
+			packageProductDependencies = (
+			);
 			productName = "Day 20";
 			productReference = 95A6C2AC21CBA41600A0BA08 /* Day 20 */;
 			productType = "com.apple.product-type.tool";
