@@ -1,6 +1,8 @@
-// Created by Julian Dunskus
-
-import Foundation
+import AoC_Helpers
+import SimpleParser
+import Collections
+import HandyOperators
+import Darwin
 
 extension Direction {
 	init?(rawCardinal: Character) {
@@ -12,122 +14,138 @@ extension Direction {
 		default: return nil
 		}
 	}
+	
+	var cardinal: String {
+		switch self {
+		case .up:
+			return "N"
+		case .right:
+			return "E"
+		case .down:
+			return "S"
+		case .left:
+			return "W"
+		}
+	}
 }
 
-enum PathPart {
-	case single([Direction])
+enum Part: CustomStringConvertible {
+	case single(Direction)
 	case multiple([Path])
+	
+	var description: String {
+		switch self {
+		case .single(let direction):
+			return direction.cardinal
+		case .multiple(let paths):
+			return "(" + paths.map(description(for:)).joined(separator: "|") + ")"
+		}
+	}
 }
-typealias Path = [PathPart]
 
-var parser = Parser(reading: input().dropFirst())
+func description<S: Sequence>(for path: S) -> String where S.Element == Part {
+	path.map(String.init).joined()
+}
 
-func read() -> (path: Path, isScopeDone: Bool) {
-	var path = Path()
-	var current: [Direction] = []
-	while true {
-		switch parser.consumeNext() {
-		case "(":
-			path.append(.single(current))
-			current = []
-			
-			let options: [Path] = [] <- {
-				while true {
-					let option = read()
-					$0.append(option.path)
-					guard !option.isScopeDone else { return }
-				}
-			}
-			path.append(.multiple(options))
+typealias Path = [Part]
+typealias Subpath = Path.SubSequence
+
+var parser = Parser(reading: input())
+parser.consume("^")
+
+func readDisjunction() -> [Path] {
+	Array(sequence(state: ()) { _ in
+		switch parser.next! {
+		case ")":
+			parser.consume(")")
+			return nil
 		case "|":
-			path.append(.single(current))
-			current = []
-			return (path, isScopeDone: false)
-		case ")", "$":
-			path.append(.single(current))
-			current = []
-			return (path, isScopeDone: true)
-		case let raw:
-			current.append(Direction(rawCardinal: raw)!)
+			parser.consume("|")
+			fallthrough
+		default:
+			return readPath()
 		}
+	})
+}
+
+func readPath() -> Path {
+	Array(sequence(state: ()) { _ in
+		switch parser.next! {
+		case "|", ")", "$":
+			return nil
+		default:
+			return readPart()
+		}
+	})
+}
+
+func readPart() -> Part {
+	switch parser.consumeNext() {
+	case "(":
+		return .multiple(readDisjunction())
+	case let raw:
+		return .single(Direction(rawCardinal: raw)!)
 	}
 }
 
-struct DoorAvailability: OptionSet {
+let path = readPath()
+parser.consume("$")
+print("path parsed!")
+print(description(for: path))
+
+let start = Vector2.zero
+
+struct Map {
+	var connections: [Vector2: DirectionSet] = [:]
 	
-	static let horizontal = DoorAvailability(rawValue: 1 << 0)
-	static let vertical = DoorAvailability(rawValue: 1 << 1)
+	mutating func addConnection(from position: Vector2, in direction: Direction) {
+		connections[position, default: []].insert(.init(direction))
+	}
 	
-	let rawValue: Int
+	static func + (lhs: Self, rhs: Self) -> Self {
+		.init(connections: lhs.connections.merging(rhs.connections) { $0.union($1) })
+	}
 }
 
-let offset = Vector2(1000, 1000)
-let size = Vector2(2000, 2000)
-var doors: [[DoorAvailability]] = Array(repeating: Array(repeating: [], count: size.x), count: size.y)
-
-struct Room {
-	var position: Vector2
-	
-	subscript(_ direction: Direction) -> Bool {
-		get {
-			switch direction {
-			case .up:
-				return doors[position + offset].contains(.vertical)
-			case .down:
-				return doors[position + offset - .unitY].contains(.vertical)
-			case .right:
-				return doors[position + offset].contains(.horizontal)
-			case .left:
-				return doors[position + offset - .unitX].contains(.horizontal)
+func explore(_ path: Path) -> Map {
+	var map = Map()
+	func explore(_ path: Path, from startPositions: Set<Vector2>) -> Set<Vector2> {
+		path.reduce(startPositions) { positions, part in
+			switch part {
+			case .single(let direction):
+				return Set(positions.map { position in
+					let next = position + direction.offset
+					map.addConnection(from: position, in: direction)
+					map.addConnection(from: next, in: direction.opposite)
+					return next
+				})
+			case .multiple(let paths):
+				return paths
+					.map { explore($0, from: positions) }
+					.reduce([]) { $0.union($1) }
 			}
 		}
-		nonmutating set {
-			switch direction {
-			case .up:
-				doors[position + offset].insert(.vertical)
-			case .down:
-				doors[position + offset - .unitY].insert(.vertical)
-			case .right:
-				doors[position + offset].insert(.horizontal)
-			case .left:
-				doors[position + offset - .unitX].insert(.horizontal)
-			}
-		}
+	}
+	let endPositions = explore(path, from: [start])
+	print(endPositions.count, "unique end positions")
+	return map
+}
+
+let map = explore(path)
+let connections = map.connections
+print(connections.count, "rooms identified")
+
+var depths: [Vector2: Int] = [start: 0]
+var toSearch: Deque<Vector2> = [start]
+while let start = toSearch.popFirst() {
+	let depth = depths[start]!
+	for direction in Direction.allCases where connections[start]!.contains(.init(direction)) {
+		let neighbor = start + direction.offset
+		guard depths[neighbor] == nil else { continue }
+		depths[neighbor] = depth + 1
+		toSearch.append(neighbor)
 	}
 }
 
-func room(at pos: Vector2) -> Room {
-	return Room(position: pos)
-}
-
-let (path, isDone) = read()
-assert(isDone)
-
-var exploredLength = 0
-func explore<C>(_ path: C, startingFrom start: Vector2 = .zero) -> Set<Vector2> where C: Collection, C.Element == PathPart {
-	defer {
-		if path.count > exploredLength {
-			exploredLength = path.count
-			print(exploredLength)
-		}
-	}
-	
-	switch path.first {
-	case nil:
-		return [start]
-	case .single(let steps)?:
-		var position = start
-		for direction in steps {
-			let room = Room(position: position)
-			room[direction] = true
-			position = position + direction.offset
-		}
-		return Set(explore(path.dropFirst(), startingFrom: position))
-	case .multiple(let options)?:
-		let next = options.flatMap { explore($0, startingFrom: start) }
-		return Set(next.flatMap { explore(path.dropFirst(), startingFrom: $0) })
-	}
-}
-
-let endPositions = explore(path)
-print(endPositions.count)
+print("max depth:", depths.values.max()!)
+print("depth >= 1000:", depths.values.count { $0 >= 1000 })

@@ -15,7 +15,16 @@
         "repositoryURL": "https://github.com/juliand665/SimpleParser",
         "state": {
           "branch": "main",
-          "revision": "b2bfed3c56e9d719949142d1661f3b8487fd4921",
+          "revision": "785dce487377ac789c65aa5e7d9a85d4f45c54da",
+          "version": null
+        }
+      },
+      {
+        "package": "swift-collections",
+        "repositoryURL": "https://github.com/apple/swift-collections.git",
+        "state": {
+          "branch": "main",
+          "revision": "22dc81b89fc1dee9d52c6a3fcfa1fcd08f184ae8",
           "version": null
         }
       }
