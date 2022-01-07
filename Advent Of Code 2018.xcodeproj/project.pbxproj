@@ -111,17 +111,7 @@
 		95890A6A21B4740C00510E44 /* input.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95890A6921B4740400510E44 /* input.txt */; };
 		95890A6B21B4741300510E44 /* Input.swift in Sources */ = {isa = PBXBuildFile; fileRef = 955D65AA1FD34457005D20D8 /* Input.swift */; };
 		959D775221D4E62200618A86 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 959D775121D4E62200618A86 /* main.swift */; };
-		959D775621D4E62900618A86 /* Input.swift in Sources */ = {isa = PBXBuildFile; fileRef = 955D65AA1FD34457005D20D8 /* Input.swift */; };
-		959D775721D4E62900618A86 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95D84BEB21B61E70000AEFE8 /* Helpers.swift */; };
-		959D775821D4E62900618A86 /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95D84BFE21B6B7AA000AEFE8 /* Parser.swift */; };
-		959D775921D4E62900618A86 /* Geometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 957FFB7621C080F1008CA75B /* Geometry.swift */; };
-		959D775A21D4E62900618A86 /* Instructions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 955AAC5E21CA7118004C64C0 /* Instructions.swift */; };
 		959D776421D4E66100618A86 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 959D776321D4E66100618A86 /* main.swift */; };
-		959D776821D4E66800618A86 /* Input.swift in Sources */ = {isa = PBXBuildFile; fileRef = 955D65AA1FD34457005D20D8 /* Input.swift */; };
-		959D776921D4E66800618A86 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95D84BEB21B61E70000AEFE8 /* Helpers.swift */; };
-		959D776A21D4E66800618A86 /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95D84BFE21B6B7AA000AEFE8 /* Parser.swift */; };
-		959D776B21D4E66800618A86 /* Geometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 957FFB7621C080F1008CA75B /* Geometry.swift */; };
-		959D776C21D4E66800618A86 /* Instructions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 955AAC5E21CA7118004C64C0 /* Instructions.swift */; };
 		959D776F21D4E68000618A86 /* input.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 959D776E21D4E67A00618A86 /* input.txt */; };
 		959D777021D4E68400618A86 /* input.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 959D775C21D4E63D00618A86 /* input.txt */; };
 		95A6C2AF21CBA41600A0BA08 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A6C2AE21CBA41600A0BA08 /* main.swift */; };
@@ -152,6 +142,7 @@
 		95EC1C2D21C206AC00A26679 /* Geometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 957FFB7621C080F1008CA75B /* Geometry.swift */; };
 		95EC1C3021C2462C00A26679 /* input.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95EC1C2F21C2462A00A26679 /* input.txt */; };
 		B93D9EC027874E93005ACB42 /* AoC-Helpers in Frameworks */ = {isa = PBXBuildFile; productRef = B93D9EBF27874E93005ACB42 /* AoC-Helpers */; };
+		B93D9EDE2787CD0C005ACB42 /* AoC-Helpers in Frameworks */ = {isa = PBXBuildFile; productRef = B93D9EDD2787CD0C005ACB42 /* AoC-Helpers */; };
 		B9D5CEEA277A51E700A6DBE0 /* AoC-Helpers in Frameworks */ = {isa = PBXBuildFile; productRef = B9D5CEE9277A51E700A6DBE0 /* AoC-Helpers */; };
 		B9D5CEEF277A678700A6DBE0 /* Collections in Frameworks */ = {isa = PBXBuildFile; productRef = B9D5CEEE277A678700A6DBE0 /* Collections */; };
 /* End PBXBuildFile section */
@@ -617,6 +608,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B93D9EDE2787CD0C005ACB42 /* AoC-Helpers in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1299,6 +1291,9 @@
 			dependencies = (
 			);
 			name = "Day 24";
+			packageProductDependencies = (
+				B93D9EDD2787CD0C005ACB42 /* AoC-Helpers */,
+			);
 			productName = "Day 24";
 			productReference = 959D774F21D4E62200618A86 /* Day 24 */;
 			productType = "com.apple.product-type.tool";
@@ -1787,11 +1782,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				959D775621D4E62900618A86 /* Input.swift in Sources */,
-				959D775721D4E62900618A86 /* Helpers.swift in Sources */,
-				959D775821D4E62900618A86 /* Parser.swift in Sources */,
-				959D775921D4E62900618A86 /* Geometry.swift in Sources */,
-				959D775A21D4E62900618A86 /* Instructions.swift in Sources */,
 				959D775221D4E62200618A86 /* main.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1800,11 +1790,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				959D776821D4E66800618A86 /* Input.swift in Sources */,
-				959D776921D4E66800618A86 /* Helpers.swift in Sources */,
-				959D776A21D4E66800618A86 /* Parser.swift in Sources */,
-				959D776B21D4E66800618A86 /* Geometry.swift in Sources */,
-				959D776C21D4E66800618A86 /* Instructions.swift in Sources */,
 				959D776421D4E66100618A86 /* main.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2851,6 +2836,10 @@
 
 /* Begin XCSwiftPackageProductDependency section */
 		B93D9EBF27874E93005ACB42 /* AoC-Helpers */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = "AoC-Helpers";
+		};
+		B93D9EDD2787CD0C005ACB42 /* AoC-Helpers */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = "AoC-Helpers";
 		};
