@@ -1,11 +1,6 @@
 import AoC_Helpers
 import HandyOperators
 
-enum PointState {
-	case main
-	case child(parent: Int)
-}
-
 let fixedPoints = input().lines().map(Vector4.init)
 
 // union-find, i think?
