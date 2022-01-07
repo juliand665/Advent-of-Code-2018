@@ -143,6 +143,7 @@
 		95EC1C3021C2462C00A26679 /* input.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95EC1C2F21C2462A00A26679 /* input.txt */; };
 		B93D9EC027874E93005ACB42 /* AoC-Helpers in Frameworks */ = {isa = PBXBuildFile; productRef = B93D9EBF27874E93005ACB42 /* AoC-Helpers */; };
 		B93D9EDE2787CD0C005ACB42 /* AoC-Helpers in Frameworks */ = {isa = PBXBuildFile; productRef = B93D9EDD2787CD0C005ACB42 /* AoC-Helpers */; };
+		B93D9EE02787E8C5005ACB42 /* AoC-Helpers in Frameworks */ = {isa = PBXBuildFile; productRef = B93D9EDF2787E8C5005ACB42 /* AoC-Helpers */; };
 		B9D5CEEA277A51E700A6DBE0 /* AoC-Helpers in Frameworks */ = {isa = PBXBuildFile; productRef = B9D5CEE9277A51E700A6DBE0 /* AoC-Helpers */; };
 		B9D5CEEF277A678700A6DBE0 /* Collections in Frameworks */ = {isa = PBXBuildFile; productRef = B9D5CEEE277A678700A6DBE0 /* Collections */; };
 /* End PBXBuildFile section */
@@ -616,6 +617,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B93D9EE02787E8C5005ACB42 /* AoC-Helpers in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1311,6 +1313,9 @@
 			dependencies = (
 			);
 			name = "Day 25";
+			packageProductDependencies = (
+				B93D9EDF2787E8C5005ACB42 /* AoC-Helpers */,
+			);
 			productName = "Day 25";
 			productReference = 959D776121D4E66100618A86 /* Day 25 */;
 			productType = "com.apple.product-type.tool";
@@ -2840,6 +2845,10 @@
 			productName = "AoC-Helpers";
 		};
 		B93D9EDD2787CD0C005ACB42 /* AoC-Helpers */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = "AoC-Helpers";
+		};
+		B93D9EDF2787E8C5005ACB42 /* AoC-Helpers */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = "AoC-Helpers";
 		};
