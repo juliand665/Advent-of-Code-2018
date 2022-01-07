@@ -1,30 +1,20 @@
 // Created by Julian Dunskus
 
-import Foundation
-
-struct Vector3 {
-	var x, y, z: Int
-}
-
-extension Vector3 {
-	func distance(to other: Vector3) -> Int {
-		return abs(x - other.x) + abs(y - other.y) + abs(z - other.z)
-	}
-}
-
-extension Vector3: Parseable {
-	init(from parser: inout Parser) {
-		x = parser.readInt()
-		parser.consume(",")
-		y = parser.readInt()
-		parser.consume(",")
-		z = parser.readInt()
-	}
-}
+import AoC_Helpers
+import SimpleParser
+import HandyOperators
 
 struct Nanobot {
 	var position: Vector3
 	var range: Int
+	
+	var cuboid: Cuboid {
+		.init(center: position, radius: range)
+	}
+	
+	func rangeOverlaps(with other: Self) -> Bool {
+		position.distance(to: other.position) <= range + other.range
+	}
 }
 
 extension Nanobot: Parseable {
@@ -43,82 +33,43 @@ print("bots in range:", botsInRange)
 
 // MARK: -
 
-struct Endpoint {
-	var position: Int
-	var kind: Kind
-	
-	enum Kind {
-		case lower, upper
-	}
+// i won't lie, this part was actual hell.
+// ended up finding https://todd.ginsberg.com/post/advent-of-code/2018/day23/ (nice writeup)
+// their implementation of the Bron-Kerbosch algorithm looked somewhat nonstandard though and i ended up mostly copying it (except for the X set, which they didn't even use)
+
+let adjacency = bots.enumerated().map { index, bot in
+	Set(bots.indices.filter { bot.rangeOverlaps(with: bots[$0]) }).subtracting([index])
 }
 
-func rangeEndpoints(in component: (Nanobot) -> Int) -> [Endpoint] {
-	[]
-		+ bots.map { Endpoint(position: component($0) - $0.range, kind: .lower) }
-		+ bots.map { Endpoint(position: component($0) + $0.range, kind: .upper) }
-}
-
-struct Overlap {
-	var range: ClosedRange<Int>
-	var count: Int
-	
-	func distance(to point: Int) -> Int {
-		if range.contains(point) {
-			return 0
-		} else {
-			return min(
-				abs(point - range.lowerBound),
-				abs(point - range.upperBound)
+func maximalCliques(
+	considering unknown: Set<Int>,
+	included: Set<Int> = []
+) -> [Set<Int>] {
+	if unknown.isEmpty {
+		return [included]
+	} else {
+		// pivot on the vertex with the most neighbors
+		let pivotNeighbors = unknown
+			.lazy
+			.map { adjacency[$0] }
+			.max(on: \.count)!
+		let toTry = unknown.subtracting(pivotNeighbors)
+		return toTry.flatMap { candidate -> [Set<Int>] in
+			let neighbors = adjacency[candidate]
+			return maximalCliques(
+				considering: unknown.intersection(neighbors),
+				included: included.union([candidate])
 			)
 		}
 	}
 }
 
-func sortedOverlaps(in component: (Nanobot) -> Int) -> [Overlap] {
-	let endpoints = rangeEndpoints(in: component).sorted(on: ^\.position)
-	
-	var overlaps: [Overlap] = []
-	var level = 0
-	for (start, end) in zip(endpoints, endpoints.dropFirst()) {
-		switch start.kind {
-		case .lower:
-			level += 1
-		case .upper:
-			level -= 1
-		}
-		
-		overlaps.append(Overlap(range: start.position...end.position, count: level))
-	}
-	assert(level == 1)
-	
-	return overlaps
-		.sorted { $0.count }
-		.reversed() // best first
+measureTime {
+	let cliques = Set(maximalCliques(considering: Set(bots.indices)))
+	print(cliques.count, "maximal cliques")
+	let maxSize = cliques.map(\.count).max()!
+	let biggestClique = cliques.onlyElement { $0.count == maxSize }!
+	print("biggest clique covers", biggestClique.count, "scanners")
+	// distance to closest position in overlap is maximum distance to closest position in each bot's range
+	print(biggestClique.map { bots[$0] }.map { $0.position.absolute - $0.range }.max()!)
 }
-
-func distanceToClosestPosition(in overlaps: [Overlap]) -> Int {
-	return overlaps
-		.map { $0.distance(to: 0) }
-		.min()!
-}
-
-// this componentwise approach doesn't work because distance to a nanobot (and thus whether or not you're in range) depends on all 3 dimensions…
-let components = [\Nanobot.position.x, \.position.y, \.position.z]
-let overlapsByComponent = components
-	.map(^)
-	.map(sortedOverlaps(in:))
-
-let targetCount = overlapsByComponent
-	.map { $0.first!.count }
-	.min()!
-
-print("best possible count:", targetCount)
-
-let distance = overlapsByComponent
-	.map({ $0
-		.filter { $0.count >= targetCount }
-		.map { $0.distance(to: 0) }
-		.min()!
-	})
-	.reduce(0, +)
-print("distance to closest optimal point:", distance)

@@ -95,11 +95,6 @@
 		956A21B721CE53C700E3239C /* Geometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 957FFB7621C080F1008CA75B /* Geometry.swift */; };
 		956A21B821CE53C700E3239C /* Instructions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 955AAC5E21CA7118004C64C0 /* Instructions.swift */; };
 		956A21C021CFABD200E3239C /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 956A21BF21CFABD200E3239C /* main.swift */; };
-		956A21C421CFABDC00E3239C /* Input.swift in Sources */ = {isa = PBXBuildFile; fileRef = 955D65AA1FD34457005D20D8 /* Input.swift */; };
-		956A21C521CFABDC00E3239C /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95D84BEB21B61E70000AEFE8 /* Helpers.swift */; };
-		956A21C621CFABDC00E3239C /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95D84BFE21B6B7AA000AEFE8 /* Parser.swift */; };
-		956A21C721CFABDC00E3239C /* Geometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 957FFB7621C080F1008CA75B /* Geometry.swift */; };
-		956A21C821CFABDC00E3239C /* Instructions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 955AAC5E21CA7118004C64C0 /* Instructions.swift */; };
 		956A21CB21CFABF800E3239C /* input.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 956A21CA21CFABF200E3239C /* input.txt */; };
 		957FFB7721C080F1008CA75B /* Geometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 957FFB7621C080F1008CA75B /* Geometry.swift */; };
 		957FFB7821C080F1008CA75B /* Geometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 957FFB7621C080F1008CA75B /* Geometry.swift */; };
@@ -156,6 +151,7 @@
 		95EC1C2C21C206AC00A26679 /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95D84BFE21B6B7AA000AEFE8 /* Parser.swift */; };
 		95EC1C2D21C206AC00A26679 /* Geometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 957FFB7621C080F1008CA75B /* Geometry.swift */; };
 		95EC1C3021C2462C00A26679 /* input.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 95EC1C2F21C2462A00A26679 /* input.txt */; };
+		B93D9EC027874E93005ACB42 /* AoC-Helpers in Frameworks */ = {isa = PBXBuildFile; productRef = B93D9EBF27874E93005ACB42 /* AoC-Helpers */; };
 		B9D5CEEA277A51E700A6DBE0 /* AoC-Helpers in Frameworks */ = {isa = PBXBuildFile; productRef = B9D5CEE9277A51E700A6DBE0 /* AoC-Helpers */; };
 		B9D5CEEF277A678700A6DBE0 /* Collections in Frameworks */ = {isa = PBXBuildFile; productRef = B9D5CEEE277A678700A6DBE0 /* Collections */; };
 /* End PBXBuildFile section */
@@ -606,6 +602,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B93D9EC027874E93005ACB42 /* AoC-Helpers in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1265,6 +1262,9 @@
 			dependencies = (
 			);
 			name = "Day 23";
+			packageProductDependencies = (
+				B93D9EBF27874E93005ACB42 /* AoC-Helpers */,
+			);
 			productName = "Day 23";
 			productReference = 956A21BD21CFABD200E3239C /* Day 23 */;
 			productType = "com.apple.product-type.tool";
@@ -1767,11 +1767,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				956A21C421CFABDC00E3239C /* Input.swift in Sources */,
-				956A21C521CFABDC00E3239C /* Helpers.swift in Sources */,
-				956A21C621CFABDC00E3239C /* Parser.swift in Sources */,
-				956A21C721CFABDC00E3239C /* Geometry.swift in Sources */,
-				956A21C821CFABDC00E3239C /* Instructions.swift in Sources */,
 				956A21C021CFABD200E3239C /* main.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2855,6 +2850,10 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		B93D9EBF27874E93005ACB42 /* AoC-Helpers */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = "AoC-Helpers";
+		};
 		B9D5CEE9277A51E700A6DBE0 /* AoC-Helpers */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = "AoC-Helpers";
